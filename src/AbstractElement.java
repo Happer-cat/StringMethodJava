@@ -1,13 +1,6 @@
 import java.util.function.Function;
 
-/**
- * @Author：Happer
- * @Package：PACKAGE_NAME
- * @Project：FiniteMethod
- * @name：AbstractElement
- * @Date：2024/7/24 21:16
 
- */
 abstract class AbstractElement implements IElement {
     protected double x1, x2;
     protected Function<Double, Double> s_func;
