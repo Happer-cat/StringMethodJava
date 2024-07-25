@@ -6,7 +6,7 @@ import java.util.function.Function;
  * @Project：FiniteMethod
  * @name：AbstractElement
  * @Date：2024/7/24 21:16
- * @Filename：AbstractElement
+
  */
 abstract class AbstractElement implements IElement {
     protected double x1, x2;

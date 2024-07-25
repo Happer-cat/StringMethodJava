@@ -1,0 +1,18 @@
+@startuml
+actor User
+participant Main
+participant IMesh as "Mesh"
+participant IFiniteElementSolver as "FiniteElementSolver"
+participant IConvergenceAnalyzer as "ConvergenceAnalyzer"
+
+User -> Main: main(args)
+Main -> Mesh: new Mesh(L, num_elements)
+Main -> FiniteElementSolver: new FiniteElementSolver(mesh, f_L, q_0, Math::sin)
+Main -> FiniteElementSolver: solve()
+FiniteElementSolver -> IElement: getLocalStiffnessMatrix()
+FiniteElementSolver -> IElement: getLocalMassMatrix()
+FiniteElementSolver -> IElement: getLocalLoadVector()
+FiniteElementSolver -> Main: solution
+Main -> ConvergenceAnalyzer: new ConvergenceAnalyzer()
+Main -> ConvergenceAnalyzer: analyze(exactSolution, solution, nodes)
+@enduml
