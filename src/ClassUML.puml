@@ -1,0 +1,67 @@
+@startuml
+
+interface IElement {
+    +Matrix getLocalStiffnessMatrix()
+    +Matrix getLocalMassMatrix()
+    +Matrix getLocalLoadVector()
+}
+
+interface IMesh {
+    +int getNumNodes()
+    +double[] getNodes()
+    +List<IElement> getElements(Function<Double, Double> s_func)
+}
+
+interface IFiniteElementSolver {
+    +Matrix solve()
+}
+
+interface IConvergenceAnalyzer {
+    +void analyze(double[] exactSolution, Matrix numericalSolution, double[] nodes)
+}
+
+abstract class AbstractElement {
+    -double x1
+    -double x2
+    -Function<Double, Double> s_func
+    +AbstractElement(double x1, double x2, Function<Double, Double> s_func)
+}
+
+class LinearElement extends AbstractElement {
+    +Matrix getLocalStiffnessMatrix()
+    +Matrix getLocalMassMatrix()
+    +Matrix getLocalLoadVector()
+}
+
+class Mesh implements IMesh {
+    -double L
+    -int num_elements
+    -double[] nodes
+    +Mesh(double L, int num_elements)
+    +int getNumNodes()
+    +double[] getNodes()
+    +List<IElement> getElements(Function<Double, Double> s_func)
+}
+
+abstract class AbstractFiniteElementSolver implements IFiniteElementSolver {
+    -IMesh mesh
+    -double f_L
+    -double q_0
+    -Function<Double, Double> s_func
+    +AbstractFiniteElementSolver(IMesh mesh, double f_L, double q_0, Function<Double, Double> s_func)
+    #abstract Matrix s_func_values()
+    #abstract void applyBoundaryConditions(Matrix D, Matrix F)
+}
+
+class FiniteElementSolver extends AbstractFiniteElementSolver {
+    +FiniteElementSolver(IMesh mesh, double f_L, double q_0, Function<Double, Double> s_func)
+    +Matrix solve()
+    #Matrix s_func_values()
+    #void applyBoundaryConditions(Matrix D, Matrix F)
+}
+
+class ConvergenceAnalyzer implements IConvergenceAnalyzer {
+    +void analyze(double[] exactSolution, Matrix numericalSolution, double[] nodes)
+}
+
+@enduml
